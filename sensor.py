@@ -37,7 +37,7 @@ async def async_setup_entry(
     entities = [
         # For "money_allocated" (Total budgeted spending for the month)
         MaybeFinanceTotalSensor(coordinator, "money_allocated",
-                                "Total Budgeted Spending"),
+                                "Total Budget"),
 
         # For "money_spent" (Total money spent for the month)
         MaybeFinanceTotalSensor(coordinator, "money_spent", "Total Money Spent"),
@@ -48,11 +48,11 @@ async def async_setup_entry(
 
         # For "percent_spent" (Percent of budget remaining for the month)
         MaybeFinanceTotalSensor(coordinator, "percent_spent",
-                                "Percent of Budget Spent", unit=PERCENTAGE),
+                                "Percent of Total Budget Spent", unit=PERCENTAGE),
 
         # For "percent_overage" (Budget overage percent)
         MaybeFinanceTotalSensor(coordinator, "percent_overage",
-                                "Budget Overage Percent", unit=PERCENTAGE)
+                                "Total Budget Overage Percent", unit=PERCENTAGE)
     ]
 
     # Create sensors for each budget category
@@ -63,20 +63,20 @@ async def async_setup_entry(
 
             # For "money_spent" (Money spent for the month in this category)
             entities.append(
-                MaybeFinanceCategorySensor(coordinator, category_name, f"Money Spent on Category: '{category_name}'",
+                MaybeFinanceCategorySensor(coordinator, category_name, f"Money Spent: '{category_name}'",
                                            "money_spent")
             )
 
             # For "money_available" (Money left in budget for the month in this category)
             entities.append(
-                MaybeFinanceCategorySensor(coordinator, category_name, f"Budget Remaining for Category: '{category_name}'",
+                MaybeFinanceCategorySensor(coordinator, category_name, f"Budget Remaining: '{category_name}'",
                                            "money_available")
             )
 
             # For "percent_spent" (Percent of budget reamining for the month in this category)
             entities.append(
-                MaybeFinanceCategorySensor(coordinator, category_name, f"Percent of Budget Remaining for Category: '{category_name}'",
-                                           "percent_spent")
+                MaybeFinanceCategorySensor(coordinator, category_name, f"Percent Budget Remaining: '{category_name}'",
+                                           "percent_spent", unit=PERCENTAGE)
             )
 
     async_add_entities(entities)
@@ -123,7 +123,7 @@ class MaybeFinanceTotalSensor(CoordinatorEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self._data_key = data_key
-        self._attr_name = f"Maybe Finance {name}"
+        self._attr_name = name
         self._attr_unique_id = f"maybe_finance_{data_key.replace('.', '_')}"
         self._attr_native_unit_of_measurement = unit
         self._attr_icon = "mdi:cash"
@@ -145,7 +145,7 @@ class MaybeFinanceCategorySensor(CoordinatorEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self._category_name = category_name
-        self._attr_name = f"Maybe Finance {name}"
+        self._attr_name = name
         self._data_key = data_key
         self._attr_unique_id = f"maybe_finance_{category_name.replace(' ', '_')}_{data_key.replace('.', '_')}"
         # TODO: ADD EURO SUPPORT

@@ -1,0 +1,11 @@
+{
+  "domain": "maybe_finance",
+  "name": "Maybe Finance",
+  "config_flow": true,
+  "codeowners": ["@scott-carrion"],
+  "dependencies": [],
+  "documentation": "https://github.com/scott-carrion/hass_maybe",
+  "iot_class": "cloud_polling",
+  "requirements": [],
+  "version": "1.0.0"
+}

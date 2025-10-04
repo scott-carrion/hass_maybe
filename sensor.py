@@ -75,7 +75,7 @@ async def async_setup_entry(
 
             # For "percent_spent" (Percent of budget reamining for the month in this category)
             entities.append(
-                MaybeFinanceCategorySensor(coordinator, category_name, f"Percent Budget Remaining: '{category_name}'",
+                MaybeFinanceCategorySensor(coordinator, category_name, f"Percent Budget Spent: '{category_name}'",
                                            "percent_spent", unit=PERCENTAGE)
             )
 

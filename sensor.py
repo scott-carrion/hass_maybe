@@ -30,7 +30,10 @@ async def async_setup_entry(
     # The coordinator object is responsible for fetching data from the API endpoint
     # The URL is expected to be the base URL of the Maybe instance (path is appended later)
     coordinator = MaybeFinanceCoordinator(hass, url, api_key)
-    await coordinator.async_config_entry_first_refresh()
+    try:
+        await coordinator.async_config_entry_first_refresh()
+    except Exception as e:
+        raise ConfigEntryNotReady("Failed to contact Maybe finance") from e
 
     # Sensors capturing data from "totals" tree of API endpoint payload data
     _LOGGER.debug("Creating TotalSensors")
@@ -80,7 +83,6 @@ async def async_setup_entry(
             )
 
     async_add_entities(entities)
-
 
 class MaybeFinanceCoordinator(DataUpdateCoordinator):
     """A coordinator to fetch data from the Maybe Finance API."""

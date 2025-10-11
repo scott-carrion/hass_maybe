@@ -12,7 +12,7 @@ from homeassistant.helpers.update_coordinator import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import ConfigEntry, ConfigEntryNotReady
 from homeassistant.const import CONF_API_KEY, CONF_URL, CURRENCY_DOLLAR, PERCENTAGE
 import httpx
 
